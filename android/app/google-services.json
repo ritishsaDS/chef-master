@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "835148053724",
+    "project_id": "chefapp-7ac19",
+    "storage_bucket": "chefapp-7ac19.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:835148053724:android:976aa9ee846c4b08228819",
+        "android_client_info": {
+          "package_name": "com.parul.flutter_chef"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "835148053724-fn4qadgj1nledvh7b96g3mkltum68bb9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoxDnAmAFrglIZBs3-oo0gvSbtC95La8k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "835148053724-fn4qadgj1nledvh7b96g3mkltum68bb9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

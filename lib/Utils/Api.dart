@@ -1,0 +1,21 @@
+const domainURL = 'http://chief.uplosse.com/api/';
+String login = domainURL + "chef/login";
+String register = domainURL + "chef/register";
+String forgotpass = domainURL + "chef/forgot-password";
+String loginuser = domainURL+'user/login';
+String registeruser = domainURL+"user/register";
+String chefprofile = domainURL+"chef/get-profile";
+String userprofile = domainURL+"user/get-profile";
+String chefListing = domainURL+"chef/listing";
+String dishListing = domainURL+"dish/listing";
+String userupdateprofile = domainURL+"user/update-profile";
+String chefupdateprofile = domainURL+"chef/update-profile";
+String chefaddish = domainURL+"chef/add-dish";
+String dishsorting = domainURL+"chef/dish-sorting";
+String chefdishlist = domainURL+"chef/dish-list";
+String chefeditdish = domainURL+"chef/edit-dish";
+String chefdeletdish = domainURL+"chef/delete-dish";
+String chefsearchdish = domainURL+"chef/dish-search";
+String getWishlist = domainURL+"get_wishlist";
+String addWishlist = domainURL+"add_wishlist";
+
