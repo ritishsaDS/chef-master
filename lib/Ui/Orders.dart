@@ -17,7 +17,7 @@ class _OrdersState extends State<Orders> {
     SizeConfig().init(context);
 
     return SafeArea(child: Scaffold(
-     // bottomNavigationBar: navBar(2, context),
+     // bottomNavigationBar: navBar(2),
 
 
       body: SingleChildScrollView(

@@ -1,4 +1,4 @@
-const domainURL = 'http://chief.uplosse.com/api/';
+const domainURL = 'http://royalgujarati.com/chief/public/api/';
 String login = domainURL + "chef/login";
 String register = domainURL + "chef/register";
 String forgotpass = domainURL + "chef/forgot-password";

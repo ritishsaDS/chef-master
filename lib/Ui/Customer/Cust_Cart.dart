@@ -1,11 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chef/Utils/Cartlisttile.dart';
 import 'package:flutter_chef/Utils/Constants.dart';
+import 'package:flutter_chef/Utils/Cutomerdrawer.dart';
+import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Utils/CustomerNavBar.dart';
 import '../../Utils/HomePageCard.dart';
 import '../../Utils/SizeConfig.dart';
+import 'AddCard.dart';
 
 class Cart extends StatefulWidget {
   @override
@@ -16,170 +22,22 @@ class _CartState extends State<Cart> {
   bool breakfast = false;
   bool lunch = false;
   bool dinner = false;
+ bool isError = false;
+bool  isLoading = false;
+@override
+  void initState() {
+  getWishlistfroserver();
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return SafeArea(
         child: Scaffold(
             backgroundColor: Colors.white,
-            bottomNavigationBar: customerNavBar(1, context),
-            drawer: Drawer(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    color: Color(0XFFFEE715),
-                    height: SizeConfig.screenHeight * 0.1,
-                    width: SizeConfig.screenWidth,
-                    padding: EdgeInsets.symmetric(
-                        vertical: SizeConfig.blockSizeVertical * 2,
-                        horizontal: SizeConfig.blockSizeHorizontal * 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            Text(
-                              "June 10,2021",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: SizeConfig.blockSizeVertical * 1.50,
-                              ),
-                            ),
-                            SizedBox(
-                              height: SizeConfig.blockSizeVertical,
-                            ),
-                            Text(
-                              "Hi,Client Name",
-                              style: TextStyle(
-                                  fontSize: SizeConfig.blockSizeVertical * 2,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
-                            )
-                          ],
-                        ),
-                        Container(
-                          height: SizeConfig.screenHeight * 0.1,
-                          width: SizeConfig.screenWidth * 0.1,
-                          child: Icon(
-                            Icons.menu_rounded,
-                            size: SizeConfig.blockSizeVertical * 4,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: SizeConfig.blockSizeVertical * 4,
-                  ),
-                  ListTile(
-                    onTap: (){
-                      Navigator.of(context).pushNamed('/Cart');
-                    },
-                    leading: Image.asset(
-                      'assets/icons/cart icon.png',
-                      height: SizeConfig.blockSizeVertical * 4,
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      color: Colors.black,
-                    ),
-                    title: Text(
-                      "My Cart",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  ListTile(
-                    onTap: (){
-                      Navigator.of(context).pushNamed('/CustomerOrders');
-                    },
-                    leading: Image.asset(
-                      'assets/icons/orders icon.png',
-                      height: SizeConfig.blockSizeVertical * 4,
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      color: Colors.black,
-                    ),
-                    title: Text(
-                      "My Orders",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  ListTile(
-                    onTap: (){
-                      Navigator.of(context).pushNamed('/Wallet');
-                    },
-                    leading: Image.asset(
-                      'assets/icons/wallet icon.png',
-                      height: SizeConfig.blockSizeVertical * 4,
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      color: Colors.black,
-                    ),
-                    title: Text(
-                      "My Wallet",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  ListTile(
-                    onTap: (){
-                      Navigator.of(context).pushNamed('/CustomerProfile');
-                    },
-                    leading: Image.asset(
-                      'assets/icons/profile icon.png',
-                      height: SizeConfig.blockSizeVertical * 4,
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      color: Colors.black,
-                    ),
-                    title: Text(
-                      "My Profile",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.favorite_sharp,
-                      color: Colors.black,
-                      size: SizeConfig.blockSizeVertical * 4,
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      color: Colors.black,
-                    ),
-                    title: Text(
-                      "My Favourite",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    onTap: () {
-                      Navigator.of(context).pushNamed('/MyFavourite');
-                    },
-                  ),
-                  ListTile(
-                    onTap: (){
-                      Navigator.of(context).popAndPushNamed('/CustomerLogin');
-                    },
-                    leading: Image.asset(
-                      'assets/icons/logout icon.png',
-                      height: SizeConfig.blockSizeVertical * 4,
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      color: Colors.black,
-                    ),
-                    title: Text(
-                      "Logout",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            bottomNavigationBar: Customerbottom(index:1),
+            drawer: Customerdrawer(),
             body: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Column(
@@ -216,7 +74,7 @@ class _CartState extends State<Cart> {
                             width: SizeConfig.screenWidth,
                             alignment: Alignment.center,),
                             Container(
-                              child: Text(Constants().currency+" 1000",
+                              child: Text(Constants().currency+ "${total.toString()}",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: SizeConfig.blockSizeVertical * 3.25,
@@ -285,20 +143,69 @@ class _CartState extends State<Cart> {
                         padding: EdgeInsets.zero,
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        children: [
-                          cartListTile(context,
-                          "Cook Name","200"),
-                          cartListTile(context,
-                              "Cook Name","400"),
-                          cartListTile(context,
-                              "Cook Name","600"),
-                          cartListTile(context,
-                              "Cook Name","900"),
-                          cartListTile(context,
-                              "Cook Name","1100"),
+                        children: showFavouriteitem()
 
-                        ],
                       ),
                     ]))));
+  }
+  dynamic wishlistarray = new List();
+var total=00;
+  void getWishlistfroserver() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString("usertoken");
+    var Userid = prefs.getInt("Userid");
+    print(token);
+    // print(widget.id.toString());
+    print(Userid.toString());
+    var link="https://royalgujarati.com/chief/public/api/get_cart";
+    try {
+      final response = await post(Uri.parse(link),body: {
+
+        "user_id":
+        Userid.toString(),
+
+
+      });
+      print("bjkb" + response.statusCode.toString());
+      if (response.statusCode == 200) {
+        final responseJson = json.decode(response.body);
+
+        wishlistarray = responseJson['data'][0]['carts'];
+        total=responseJson['data'][0]['total_price'];
+        //showToast("Dish Added to Wishlist Successfully");
+        print(wishlistarray);
+
+        setState(() {
+          isError = false;
+          isLoading = false;
+          print('setstate');
+        });
+      } else {
+        print("bjkb" + response.statusCode.toString());
+        // showToast("Mismatch Credentials");
+        setState(() {
+          isError = true;
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      print(e);
+      setState(() {
+        isError = true;
+        isLoading = false;
+      });
+    }
+  }
+  List<Widget>  showFavouriteitem() {
+    List <Widget> wishlist=List();
+    for(int i=0; i<wishlistarray.length;i++){
+      wishlist.add(
+        GestureDetector(onTap: (){
+Navigator.push(context, MaterialPageRoute(builder: (context)=>AddCard()));
+        },
+            child: cartListTile(name:wishlistarray[i]['name'],image:wishlistarray[i]['image'],price:wishlistarray[i]['price'].toString(),id:wishlistarray[i]['id'].toString(),cookName:"Cook Name",chef_id:wishlistarray[i]['chef_id'].toString()))
+      );
+    }
+    return wishlist;
   }
 }

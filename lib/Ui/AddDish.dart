@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chef/Utils/Actionsheet.dart';
@@ -11,7 +13,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:io';
-
 class AddDish extends StatefulWidget {
   const AddDish({Key key}) : super(key: key);
 
@@ -32,7 +33,7 @@ class _AddDishState extends State<AddDish> {
   String status;
   List cat=[];
   String category;
-  List<dishIngredient> ingredient = [];
+  List<Ingredient> ingredient = [];
   var nameTECs = <TextEditingController>[];
   var ageTECs = <TextEditingController>[];
   var jobTECs = <TextEditingController>[];
@@ -44,7 +45,7 @@ String ingredientnamestring;
   String quantitystring;
   String unitsstrimg;
   String requiredstring;
-
+  Future<File> file;
   List <String> ingredientname=[];
   List <String> quantity=[];
   List <String> units=[];
@@ -62,11 +63,13 @@ String ingredientnamestring;
   //
   // }
    // Navigator.pop(context, entries);
+  File tmpFile;
 
   var nameController = TextEditingController();
   var ageController = TextEditingController();
   var jobController = TextEditingController();
   File _image;
+  String base64Image="";
   File _cameraImage;
   File _video;
   File _cameraVideo;
@@ -163,13 +166,14 @@ print(image);
           color: Colors.black
         ),),
       ),
-    //  bottomNavigationBar: navBar(1, context),
+    //  bottomNavigationBar: navBar(1),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            //image1(),
             Container(
               width: SizeConfig.screenWidth,
               height: SizeConfig.blockSizeVertical * 5,
@@ -680,7 +684,7 @@ else if(name==null){
 
 
 
-      var ing = dishIngredient(name:nameTECs[i].text,quantity: int.parse(ageTECs[i].text),units: "kg",required: 1);
+      var ing = Ingredient(name:nameTECs[i].text);
       ingredient.add(ing);
 
   }
@@ -701,8 +705,10 @@ else if(name==null){
       categoryfood="Dinner";
     });
   }
-  full = Adddishmodel(name: name, description: "description", price: int.parse(price),image:_image!=null?_image.path:"",
-      timeTaken: int.parse(timeTaken), status: "Active", category:cat, ingredient: ingredient,video: _video!=null?_video:"");
+  base64Image = base64Encode(_image.readAsBytesSync());
+  print(base64Image);
+  full = Adddishmodel(name: name, description: "description", price: price,dishImage:_image!=null?"data:image/jpeg;base64,"+base64Image:"",
+      timeTaken: (timeTaken), status: "Active", category:["Breakfast"], ingredient: ingredient,video:"");
   Adddishrepo.diomwthod(token, full,context);
 }
                     },
@@ -810,101 +816,101 @@ else if(name==null){
                       ],
                     ),
                   ),
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(
-                              color: Color(0XFFFEE715),
-                            ),
-                          ),
-                          alignment: Alignment.center,
-                          width: SizeConfig.screenWidth * 0.2,
-                          height: SizeConfig.blockSizeVertical * 3,
-                          child: TextField(
-                            controller: ageController,
-                          keyboardType:  TextInputType.phone,
-                            maxLength: 4,
-                            buildCounter: (BuildContext context,
-                                {int currentLength,
-                                  int maxLength,
-                                  bool isFocused}) =>
-                            null,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "Qty.",
-                              hintStyle: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: SizeConfig.blockSizeVertical * 1.25
-                              ),
-                              contentPadding: EdgeInsets.all(10),
-                            ),
-                            textAlign: TextAlign.center,
-                            cursorHeight: SizeConfig.blockSizeVertical * 2,
-                            cursorColor: Colors.black,
-
-                            onSubmitted: (value){
-                              setState(() {
-                                quantitystring=value;
-                              });
-                              quantity.add(quantitystring);
-},
-
-                          ),
-                        ),
-                        SizedBox(
-                          width: SizeConfig.blockSizeHorizontal * 2,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(
-                                  color: Color(0XFFFEE715),
-                                  width: SizeConfig.blockSizeHorizontal * 0.4
-                              )),
-                          alignment: Alignment.center,
-                          width: SizeConfig.screenWidth * 0.15,
-                          height: SizeConfig.blockSizeVertical * 3,
-                          child: Row(
-                            children: [
-                              Text("  kg  ",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold
-                                ),),
-                              Icon(Icons.arrow_drop_down,
-                                color: Colors.black,
-                                size: SizeConfig.blockSizeVertical * 2,)
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          width: SizeConfig.blockSizeHorizontal * 2,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Color(0XFFFEE715),
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(20),
-                                bottomRight: Radius.circular(20),
-                              )
-                          ),
-                          alignment: Alignment.center,
-                          width: SizeConfig.blockSizeHorizontal * 8,
-                          height: SizeConfig.blockSizeVertical * 6,
-                          child: RotatedBox(
-                            child: Text("Req.",style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),),
-                            quarterTurns: 1,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+//                   Container(
+//                     child: Row(
+//                       mainAxisAlignment: MainAxisAlignment.start,
+//                       children: [
+//                         Container(
+//                           decoration: BoxDecoration(
+//                             borderRadius: BorderRadius.circular(5),
+//                             border: Border.all(
+//                               color: Color(0XFFFEE715),
+//                             ),
+//                           ),
+//                           alignment: Alignment.center,
+//                           width: SizeConfig.screenWidth * 0.2,
+//                           height: SizeConfig.blockSizeVertical * 3,
+//                           child: TextField(
+//                             controller: ageController,
+//                           keyboardType:  TextInputType.phone,
+//                             maxLength: 4,
+//                             buildCounter: (BuildContext context,
+//                                 {int currentLength,
+//                                   int maxLength,
+//                                   bool isFocused}) =>
+//                             null,
+//                             decoration: InputDecoration(
+//                               border: InputBorder.none,
+//                               hintText: "Qty.",
+//                               hintStyle: TextStyle(
+//                                   color: Colors.grey,
+//                                   fontSize: SizeConfig.blockSizeVertical * 1.25
+//                               ),
+//                               contentPadding: EdgeInsets.all(10),
+//                             ),
+//                             textAlign: TextAlign.center,
+//                             cursorHeight: SizeConfig.blockSizeVertical * 2,
+//                             cursorColor: Colors.black,
+//
+//                             onSubmitted: (value){
+//                               setState(() {
+//                                 quantitystring=value;
+//                               });
+//                               quantity.add(quantitystring);
+// },
+//
+//                           ),
+//                         ),
+//                         SizedBox(
+//                           width: SizeConfig.blockSizeHorizontal * 2,
+//                         ),
+//                         Container(
+//                           decoration: BoxDecoration(
+//                               borderRadius: BorderRadius.circular(5),
+//                               border: Border.all(
+//                                   color: Color(0XFFFEE715),
+//                                   width: SizeConfig.blockSizeHorizontal * 0.4
+//                               )),
+//                           alignment: Alignment.center,
+//                           width: SizeConfig.screenWidth * 0.15,
+//                           height: SizeConfig.blockSizeVertical * 3,
+//                           child: Row(
+//                             children: [
+//                               Text("  kg  ",
+//                                 textAlign: TextAlign.center,
+//                                 style: TextStyle(
+//                                     fontWeight: FontWeight.bold
+//                                 ),),
+//                               Icon(Icons.arrow_drop_down,
+//                                 color: Colors.black,
+//                                 size: SizeConfig.blockSizeVertical * 2,)
+//                             ],
+//                           ),
+//                         ),
+//                         SizedBox(
+//                           width: SizeConfig.blockSizeHorizontal * 2,
+//                         ),
+//                         Container(
+//                           decoration: BoxDecoration(
+//                               color: Color(0XFFFEE715),
+//                               borderRadius: BorderRadius.only(
+//                                 topRight: Radius.circular(20),
+//                                 bottomRight: Radius.circular(20),
+//                               )
+//                           ),
+//                           alignment: Alignment.center,
+//                           width: SizeConfig.blockSizeHorizontal * 8,
+//                           height: SizeConfig.blockSizeVertical * 6,
+//                           child: RotatedBox(
+//                             child: Text("Req.",style: TextStyle(
+//                               fontWeight: FontWeight.bold,
+//                             ),),
+//                             quarterTurns: 1,
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
                 ],
               ),
             ),
@@ -974,8 +980,80 @@ else if(name==null){
     );
   }
 
+  Widget image1() {
+    return FutureBuilder<File>(
+      future: file,
+      builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
+        if (snapshot.connectionState == ConnectionState.done &&
+            null != snapshot.data) {
+          tmpFile = snapshot.data;
+          print("njdenk" );
+          base64Image = base64Encode(_image.readAsBytesSync());
+          return GestureDetector(
+            child: Container(
+                margin: EdgeInsets.all(5.0),
+                width: 75,
+                height: 78,
+                color: Colors.white10,
+                child: GestureDetector(
+                  child: Image.file(snapshot.data,
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      fit: BoxFit.fitHeight),
 
 
+                  onTap: () {
+                    _pickImageFromGallery();
+                  },
+                )),
+          );
+        } else if (null != snapshot.error) {
+          return const Text(
+            'Error Picking Image',
+            textAlign: TextAlign.center,
+          );
+        } else {
+          print("njdedssdsdnk" );
+
+          return Stack(
+            children: <Widget>[
+              GestureDetector(
+                child: Card(
+                    child: Container(
+
+                        width: 75,
+                        height: 78,
+
+                        child: Stack(
+                            children: <Widget>[
+                              Center(
+                                child: Icon(Icons.add),
+                              )]))),
+                onTap: () {
+                  setState(() {
+                     _pickImageFromGallery();
+                    print("njsdfvij" + file.toString());
+                  });                },
+              )
+            ],
+          );
+        }
+      },
+    );
+  }
+  // chooseImage() {
+  //   setState(() {
+  //     file = ImagePicker.pickImage(source: ImageSource.gallery);
+  //     print("njsdfvij" + file.toString());
+  //   });
+  //   setStatus('');
+  // }
+
+  setStatus(String message) {
+    setState(() {
+      status = message;
+    });
+  }
 }
 class PersonEntry {
   final String name;

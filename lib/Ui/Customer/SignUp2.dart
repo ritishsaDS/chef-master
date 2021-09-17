@@ -78,6 +78,8 @@ class _CustomerSignUp2State extends State<CustomerSignUp2> {
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Container(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
               decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('assets/bg/signup bg .png'),

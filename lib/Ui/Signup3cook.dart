@@ -418,7 +418,7 @@ class _Signup3CookState extends State<Signup3Cook> {
           "email": widget.email,
           "password": pwdController.text,
           "confirm_password": cPwdController.text,
-          "gender": "Male",
+          "gender":widget.gender.toString(),
           "dob": widget.dob,
           "alternative_phone_number": widget.alternative,
           "years_of_experience": widget.experience,

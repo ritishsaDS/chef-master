@@ -2,7 +2,6 @@
 //
 //     final adddishmodel = adddishmodelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 Adddishmodel adddishmodelFromJson(String str) => Adddishmodel.fromJson(json.decode(str));
@@ -11,76 +10,64 @@ String adddishmodelToJson(Adddishmodel data) => json.encode(data.toJson());
 
 class Adddishmodel {
   Adddishmodel({
-    @required this.name,
-    @required this.description,
-    @required this.price,
-    @required this.image,
-    @required this.timeTaken,
-    @required this.status,
-    @required this.category,
-    @required this.ingredient,
-    @required this.video,
+    this.name,
+    this.description,
+    this.price,
+    this.timeTaken,
+    this.status,
+    this.category,
+    this.ingredient,
+    this.dishImage,
+    this.video,
   });
 
   String name;
   String description;
-  int price;
-  int timeTaken;
-  String image;
+  String price;
+  String timeTaken;
   String status;
-  List category;
+  List<String> category;
+  List<Ingredient> ingredient;
+  String dishImage;
   String video;
-  List<dishIngredient> ingredient;
 
   factory Adddishmodel.fromJson(Map<String, dynamic> json) => Adddishmodel(
-    name: json["name"] == null ? null : json["name"],
-    image:json['image']==null?null:json['image'],
-    description: json["description"] == null ? null : json["description"],
-    price: json["price"] == null ? null : json["price"],
-    timeTaken: json["time_taken"] == null ? null : json["time_taken"],
-    status: json["status"] == null ? null : json["status"],
-    category: json["category"] == null ? null : json["category"],
-    video: json["video"] == null ? null : json["video"],
-    ingredient: json["ingredient"] == null ? null : List<dishIngredient>.from(json["ingredient"].map((x) => dishIngredient.fromJson(x))),
+    name: json["name"],
+    description: json["description"],
+    price: json["price"],
+    timeTaken: json["time_taken"],
+    status: json["status"],
+    category: List<String>.from(json["category"].map((x) => x)),
+    ingredient: List<Ingredient>.from(json["ingredient"].map((x) => Ingredient.fromJson(x))),
+    dishImage: json["dish_image"],
+    video: json["video"],
   );
 
   Map<String, dynamic> toJson() => {
-    "name": name == null ? null : name,
-    "image":image==null?null:image,
-    "description": description == null ? null : description,
-    "price": price == null ? null : price,
-    "time_taken": timeTaken == null ? null : timeTaken,
-    "status": status == null ? null : status,
-    "video": video == null ? null : video,
-    "category": category == null ? null : category,
-    "ingredient": ingredient == null ? null : List<dynamic>.from(ingredient.map((x) => x.toJson())),
+    "name": name,
+    "description": description,
+    "price": price,
+    "time_taken": timeTaken,
+    "status": status,
+    "category": List<dynamic>.from(category.map((x) => x)),
+    "ingredient": List<dynamic>.from(ingredient.map((x) => x.toJson())),
+    "dish_image": dishImage,
+    "video": video,
   };
 }
 
-class dishIngredient {
-  dishIngredient({
-     this.name,
-     this.quantity,
-     this.units,
-     this.required,
+class Ingredient {
+  Ingredient({
+    this.name,
   });
 
   String name;
-  int quantity;
-  String units;
-  int required;
 
-  factory dishIngredient.fromJson(Map<String, dynamic> json) => dishIngredient(
-    name: json["name"] == null ? null : json["name"],
-    quantity: json["quantity"] == null ? null : json["quantity"],
-    units: json["units"] == null ? null : json["units"],
-    required: json["required"] == null ? null : json["required"],
+  factory Ingredient.fromJson(Map<String, dynamic> json) => Ingredient(
+    name: json["name"],
   );
 
   Map<String, dynamic> toJson() => {
-    "name": name == null ? null : name,
-    "quantity": quantity == null ? null : quantity,
-    "units": units == null ? null : units,
-    "required": required == null ? null : required,
+    "name": name,
   };
 }

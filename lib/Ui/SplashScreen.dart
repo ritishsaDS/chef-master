@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_chef/Ui/AddDish.dart';
 
 import 'Customer/HomePage.dart';
+import 'Customer/SignUp.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -47,6 +48,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   width: SizeConfig.screenWidth * 0.4,
                   alignment: Alignment.center,
                   margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 10),
+
                 ),
                 Container(
                   child: Text(
@@ -84,16 +86,17 @@ class _SplashScreenState extends State<SplashScreen> {
                 Container(
                   child: MaterialButton(
                     onPressed: () async {
-                      Navigator.of(context).pushNamed("/AskLogin");
+                     // Navigator.of(context).pushNamed("/AskLogin");
                       SharedPreferences preferences =
                       await SharedPreferences.getInstance();
 
                       if (preferences.getString("token") == null&&preferences.getString("usertoken")==null) {
-                        Navigator.of(context).pushNamed("/AskLogin");
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => CustomerSignUp()));
                       } else {
                         if (preferences.getString("login") == "/CustomerLogin") {
                           Navigator.pushReplacement(
                               context,
+
                               MaterialPageRoute(
                                   builder: (context) => CustomerHomePage()));
                         } else {

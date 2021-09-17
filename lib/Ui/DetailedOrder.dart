@@ -20,7 +20,7 @@ class _DetailedOrderState extends State<DetailedOrder> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-    //  bottomNavigationBar: navBar(0, context),
+    //  bottomNavigationBar: navBar(0),
       appBar: AppBar(
         backgroundColor: Color(0XFFFEE715),
         centerTitle: true,

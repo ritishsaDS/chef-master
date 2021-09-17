@@ -22,7 +22,7 @@ class _CustomerOrderDetailState extends State<CustomerOrderDetail> {
     SizeConfig().init(context);
     return SafeArea(child: Scaffold(
       backgroundColor: Colors.white,
-      bottomNavigationBar: customerNavBar(2, context),
+      bottomNavigationBar: Customerbottom(index:2),
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: Icon(

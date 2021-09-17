@@ -1,6 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chef/Ui/AskLogin.dart';
 import 'package:flutter_chef/Ui/Customer/Cust_Cart.dart';
 import 'package:flutter_chef/Ui/Customer/Cust_orders.dart';
 import 'package:flutter_chef/Ui/Customer/MyWallet.dart';
@@ -31,11 +32,18 @@ import 'package:flutter_chef/Ui/Customer/CookDetails.dart';
 import 'package:flutter_chef/Ui/Customer/CustomerCartDetails.dart';
 import 'package:flutter_chef/Ui/Customer/CustomerPayment.dart';
 import 'package:flutter_chef/Ui/AddDish.dart';
-
-import 'Ui/places.dart';
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+  }
+}
 void main(){
+  HttpOverrides.global = new MyHttpOverrides();
   runApp(ChefApp());
 }
+
 class ChefApp extends StatefulWidget {
   @override
   _ChefAppState createState() => _ChefAppState();
@@ -50,9 +58,10 @@ class _ChefAppState extends State<ChefApp> {
       home: SplashScreen(),
       theme: ThemeData(
         fontFamily: 'Montserrat',
+
       ),
       routes: {
-        '/AskLogin' : (context)=> AskLoginScreen(),
+       // '/AskLogin' : (context)=> AskLoginScreen(),
         '/Login' : (context)=> LoginScreen(),
         '/SignUpCook' : (context)=> SignUpCook(),
         '/Profile' : (context)=> ProfileScreen(),

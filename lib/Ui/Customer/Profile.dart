@@ -100,7 +100,7 @@ var imagefromserver;
     return SafeArea(
         child: Scaffold(
           backgroundColor: Colors.white,
-          bottomNavigationBar: customerNavBar(4, context),
+          bottomNavigationBar: Customerbottom(index:4),
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Column(
@@ -120,10 +120,15 @@ var imagefromserver;
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              child: Icon(
-                                Icons.arrow_back_sharp,
-                                color: Colors.black,
-                                size: SizeConfig.blockSizeVertical * 4,
+                              child: GestureDetector(
+                                onTap: (){
+                                  Navigator.pop(context);
+                                },
+                                child: Icon(
+                                  Icons.arrow_back_sharp,
+                                  color: Colors.black,
+                                  size: SizeConfig.blockSizeVertical * 4,
+                                ),
                               ),
                               padding: EdgeInsets.all(8),
                             ),
@@ -818,39 +823,39 @@ var imagefromserver;
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(height: 10,),
-                                  Container(
-                                    //todo: implement dropdown
-                                    child: Text(
-                                      "Country",
-                                      style: TextStyle(color: Colors.black),
-                                    ),
-                                    padding: EdgeInsets.only(
-                                        bottom: SizeConfig.screenHeight * 0.01),
-                                  ),
-                                   Container(
-                                     padding: EdgeInsets.symmetric(horizontal: 5),
-                                        width: 189,
-                                     height: SizeConfig.blockSizeVertical * 4.5,
-decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0),border: Border.all(color:Colors.black)),
-                                        child: new DropdownButtonFormField(
-decoration: InputDecoration.collapsed(hintText: ""),
-                                            items: updateprofilefromsever.map<DropdownMenuItem<String>>((item) {
-                                              return  DropdownMenuItem(
-
-                                                child: new Text(item['country_name'],style: TextStyle(fontSize: 8),),
-                                                value: item['id'].toString(),
-                                              );
-                                            }).toList(),
-                                            onChanged: (newVal) {
-                                              setState(() {
-                                                _mySelection = newVal;
-
-                                                print(_mySelection);
-                                              });
-                                            },
-                                            value: _mySelection,
-                                          ),
-                                      ),
+//                                   Container(
+//                                     //todo: implement dropdown
+//                                     child: Text(
+//                                       "Country",
+//                                       style: TextStyle(color: Colors.black),
+//                                     ),
+//                                     padding: EdgeInsets.only(
+//                                         bottom: SizeConfig.screenHeight * 0.01),
+//                                   ),
+//                                    Container(
+//                                      padding: EdgeInsets.symmetric(horizontal: 5),
+//                                         width: 189,
+//                                      height: SizeConfig.blockSizeVertical * 4.5,
+// decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0),border: Border.all(color:Colors.black)),
+//                                         child: new DropdownButtonFormField(
+// decoration: InputDecoration.collapsed(hintText: ""),
+//                                             items: updateprofilefromsever.map<DropdownMenuItem<String>>((item) {
+//                                               return  DropdownMenuItem(
+//
+//                                                 child: new Text(item['country_name'],style: TextStyle(fontSize: 8),),
+//                                                 value: item['id'].toString(),
+//                                               );
+//                                             }).toList(),
+//                                             onChanged: (newVal) {
+//                                               setState(() {
+//                                                 _mySelection = newVal;
+//
+//                                                 print(_mySelection);
+//                                               });
+//                                             },
+//                                             value: "Afghanistan",
+//                                           ),
+//                                       ),
 
 
                                 ],
@@ -968,8 +973,12 @@ decoration: InputDecoration.collapsed(hintText: ""),
         usernameController = TextEditingController(text: profile["name"]);
         emailController = TextEditingController(text: profile["email"]);
         addressController = TextEditingController(text: profile["address"]);
-       _mySelection=profile['country'];
+       //_mySelection=profile['country'];
+
         genderhint=profile['gender'];
+        setState(() {
+          _mySelection="Afghanistan";
+        });
         // selectedGender = selectedGender(gender: 'Male');
         //  phoneController=TextEditingController(text: profile["phone_number"]);
         // Navigator.of(context).pushNamed('/CustomerLogin');

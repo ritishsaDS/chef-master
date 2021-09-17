@@ -1,29 +1,41 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_chef/Utils/CustomerNavBar.dart';
 import 'package:flutter_chef/Utils/MostSellingDishesCard.dart';
 import 'package:flutter_chef/Utils/SizeConfig.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CookDetails extends StatefulWidget {
   dynamic name;
   dynamic phone;
-   CookDetails({this.name,this.phone}) ;
+  dynamic id;
+   CookDetails({this.name,this.phone,this.id}) ;
 
   @override
   _CookDetailsState createState() => _CookDetailsState();
 }
 
 class _CookDetailsState extends State<CookDetails> {
-
+bool   isError = false;
+bool isLoading = false;
   bool aboutCook = true;
   bool dishes = false;
   bool popularDishes = false;
+  @override
+  void initState() {
+    getVideo();
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return SafeArea(
       child: Scaffold(
-        bottomNavigationBar: customerNavBar(0, context),
+        bottomNavigationBar: Customerbottom(index:0,),
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
@@ -389,5 +401,45 @@ class _CookDetailsState extends State<CookDetails> {
         ),
       ),
     );
+  }
+  dynamic cookfromserver= new List();
+  void getVideo() async {
+    SharedPreferences prefs =await SharedPreferences.getInstance();
+    prefs.getString("usertoken");
+    try {
+      final response = await post(Uri.parse("https://royalgujarati.com/chief/public/api/get_video"),body: {
+        "user_id":widget.id.toString()
+      },headers: {
+          "Authorization": "Bearer ${prefs.getString("usertoken")}",
+
+      });
+      print("bjkb" + response.statusCode.toString());
+      if (response.statusCode == 200) {
+        final responseJson = json.decode(response.body);
+
+        cookfromserver = responseJson['data'];
+
+        print(cookfromserver);
+
+        setState(() {
+          isError = false;
+          isLoading = false;
+          print('setstate');
+        });
+      } else {
+        print("bjkb" + response.statusCode.toString());
+        // showToast("Mismatch Credentials");
+        setState(() {
+          isError = true;
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      print(e);
+      setState(() {
+        isError = true;
+        isLoading = false;
+      });
+    }
   }
 }

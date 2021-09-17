@@ -60,7 +60,7 @@ class _AddCardState extends State<AddCard> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return SafeArea(child: Scaffold(
-      bottomNavigationBar: customerNavBar(3, context),
+      bottomNavigationBar: Customerbottom(index: 3,),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(

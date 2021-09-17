@@ -207,7 +207,7 @@ var imagefromserver;
     SizeConfig().init(context);
     return SafeArea(
         child: Scaffold(
-        //  bottomNavigationBar: navBar(4, context),
+        //  bottomNavigationBar: navBar(4),
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Column(

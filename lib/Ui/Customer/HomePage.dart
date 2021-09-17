@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_chef/Utils/Cutomerdrawer.dart';
 import 'package:page_view_indicators/circle_page_indicator.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,10 @@ import 'package:flutter_chef/Utils/HomePageCard.dart';
 import 'package:flutter_chef/Utils/HomePageCookCard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../AskLogin.dart';
+import 'Cust_Cart.dart';
+import 'Cust_orders.dart';
+import 'Login.dart';
+import 'MyWallet.dart';
 import 'Profile.dart';
 import 'TopCooks.dart';
 
@@ -84,13 +88,13 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                   child: IconButton(icon:Icon(Icons.logout,color: Colors.black,),onPressed: () async {
                     SharedPreferences prefs=await SharedPreferences.getInstance();
                     prefs.clear();
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>AskLoginScreen()));
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Login()));
                   },)
               ),
             ],
           ),
           backgroundColor: Colors.white,
-          bottomNavigationBar: customerNavBar(0, context),
+          bottomNavigationBar: Customerbottom(index:0),
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Column(
@@ -520,148 +524,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
               ],
             ),
           ),
-          drawer: Drawer(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  color: Color(0XFFFEE715),
-                  height: SizeConfig.screenHeight * 0.1,
-                  width: SizeConfig.screenWidth,
-                  padding: EdgeInsets.symmetric(
-                      vertical: SizeConfig.blockSizeVertical * 2,
-                      horizontal: SizeConfig.blockSizeHorizontal * 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        children: [
-                          Text(
-                            "June 10,2021",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: SizeConfig.blockSizeVertical * 1.50,
-                            ),
-                          ),
-                          SizedBox(
-                            height: SizeConfig.blockSizeVertical,
-                          ),
-                          Text(
-                            "Hi,Client Name",
-                            style: TextStyle(
-                                fontSize: SizeConfig.blockSizeVertical * 2,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                      Container(
-                        height: SizeConfig.screenHeight * 0.1,
-                        width: SizeConfig.screenWidth * 0.1,
-                        child: Icon(
-                          Icons.menu_rounded,
-                          size: SizeConfig.blockSizeVertical * 4,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: SizeConfig.blockSizeVertical * 4,
-                ),
-                ListTile(
-                  leading: Image.asset(
-                    'assets/icons/cart icon.png',
-                    height: SizeConfig.blockSizeVertical * 4,
-                  ),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    color: Colors.black,
-                  ),
-                  title: Text(
-                    "My Cart",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                ListTile(
-                  leading: Image.asset(
-                    'assets/icons/orders icon.png',
-                    height: SizeConfig.blockSizeVertical * 4,
-                  ),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    color: Colors.black,
-                  ),
-                  title: Text(
-                    "My Orders",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                ListTile(
-                  leading: Image.asset(
-                    'assets/icons/wallet icon.png',
-                    height: SizeConfig.blockSizeVertical * 4,
-                  ),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    color: Colors.black,
-                  ),
-                  title: Text(
-                    "My Wallet",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                // ListTile(
-                //   leading: Image.asset(
-                //     'assets/icons/icon.png',
-                //     height: SizeConfig.blockSizeVertical * 4,
-                //   ),
-                //   trailing: Icon(
-                //     Icons.arrow_forward_ios_rounded,
-                //     color: Colors.black,
-                //   ),
-                //   title: Text(
-                //     "My cookfromserver",
-                //     style: TextStyle(fontWeight: FontWeight.bold),
-                //   ),
-                // ),
-                ListTile(
-                  leading: Icon(
-                    Icons.favorite_sharp,
-                    color: Colors.black,
-                    size: SizeConfig.blockSizeVertical * 4,
-                  ),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    color: Colors.black,
-                  ),
-                  title: Text(
-                    "My Favourite",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  onTap: () {
-                    Navigator.of(context).pushNamed('/MyFavourite');
-                  },
-                ),
-                ListTile(
-                  leading: Image.asset(
-                    'assets/icons/logout icon.png',
-                    height: SizeConfig.blockSizeVertical * 4,
-                  ),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    color: Colors.black,
-                  ),
-                  title: Text(
-                    "Logout",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          drawer:Customerdrawer()
         ));
   }
 
@@ -681,6 +544,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
         },
         child: homepagecook(
             fullname: cookfromserver[i]['full_name'],
+            id:cookfromserver[i]['id'],
             phone: cookfromserver[i]['phone_number'].toString()),
       ));
     }
@@ -698,7 +562,9 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
         onTap: (){
           Navigator.of(context).push(MaterialPageRoute(builder:(context)=>MostSellingDishesDetails(
             name:dishfromserver[i]['name'],
-            chefname: dishfromserver[i]["chef_name"]['full_name'].toString(),
+            id:dishfromserver[i]['id'],
+            ingredients:dishfromserver[i]['dish_ingredients'],
+            chef_id: dishfromserver[i]["chef_id"].toString(),
             price: dishfromserver[i]['price'],
               image: dishfromserver[i]['image'] == null
                   ? ""
@@ -707,13 +573,15 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
           ) ));
         },
         child: Homepagecard(
-            name: dishfromserver[i]['name'],
-            chefname: dishfromserver[i]["chef_name"]['full_name'].toString(),
-            price: dishfromserver[i]['price'],
-            id:dishfromserver[i]['id'],
-            image: dishfromserver[i]['image'] == null
+            name: dishfromserver[i]['dishes']['name'],
+           wishlist:dishfromserver[i]['wishlist'],
+           // chefname: dishfromserver[i]["chef_name"]['full_name'].toString(),
+            price: dishfromserver[i]['dishes']['price'],
+            id:dishfromserver[i]['dishes']['id'],
+            chef_id:dishfromserver[i]['dishes']['chef_id'].toString(),
+            image: dishfromserver[i]['dishes']['image'] == null
                 ? ""
-                : dishfromserver[i]['image']),
+                : dishfromserver[i]['dishes']['image']),
       ));
     }
     return productList;
@@ -726,7 +594,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
   void getCookfromServer() async {
     try {
       final response = await http.post(Uri.parse(chefListing));
-      print("bjkb" + response.statusCode.toString());
+   //   print("bjkb" + response.statusCode.toString());
       if (response.statusCode == 200) {
         final responseJson = json.decode(response.body);
 
@@ -757,7 +625,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
   }
   void getbannerfromserver() async {
     try {
-      final response = await http.get(Uri.parse("http://chief.uplosse.com/api/banner-list"));
+      final response = await http.get(Uri.parse("http://royalgujarati.com/chief/public/api/banner-list"));
       print("bjkb" + response.statusCode.toString());
       if (response.statusCode == 200) {
         final responseJson = json.decode(response.body);
@@ -788,8 +656,13 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
     }
   }
   void getdishesfromserver() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString("usertoken");
+    var Userid = prefs.getInt("Userid");
     try {
-      final response = await http.post(Uri.parse(dishListing));
+      final response = await http.post(Uri.parse(dishListing),body: {
+        "user_id":Userid.toString()
+      });
       print("bjkb" + response.statusCode.toString());
       if (response.statusCode == 200) {
         final responseJson = json.decode(response.body);

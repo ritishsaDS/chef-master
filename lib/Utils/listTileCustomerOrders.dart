@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chef/Utils/SizeConfig.dart';
 
 Widget customerOrders(BuildContext context,
-    String status){
+    String status,String cat,String name,String image,String desc){
   SizeConfig().init(context);
   return Container(
     margin: EdgeInsets.only(

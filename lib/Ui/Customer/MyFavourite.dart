@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_chef/Utils/Constants.dart';
 import 'package:flutter_chef/Utils/CustomerNavBar.dart';
 import 'package:flutter_chef/Utils/SizeConfig.dart';
 import 'package:flutter_chef/Utils/listTileMyFavourites.dart';
+import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyFavourite extends StatefulWidget {
   const MyFavourite({Key key}) : super(key: key);
@@ -14,6 +19,14 @@ class _MyFavouriteState extends State<MyFavourite> {
   bool breakfast = false;
   bool lunch = false;
   bool dinner = false;
+  bool isLoading = false;
+  bool isError = false;
+  @override
+  void initState() {
+    getWishlistfroserver();
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -30,7 +43,7 @@ class _MyFavouriteState extends State<MyFavourite> {
         ),
         centerTitle: true,
       ),
-      bottomNavigationBar: customerNavBar(0, context),
+      bottomNavigationBar: Customerbottom(index:0),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
@@ -187,17 +200,72 @@ class _MyFavouriteState extends State<MyFavourite> {
             ListView(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              children: [
-                myFavouritesCard(context),
-                myFavouritesCard(context),
-                myFavouritesCard(context),
-                myFavouritesCard(context),
-                myFavouritesCard(context),
-              ],
+              children: showFavouriteitem(),
+
+
             ),
           ],
         ),
       ),
     ));
   }
+
+
+  dynamic wishlistarray = new List();
+  void getWishlistfroserver() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString("usertoken");
+    var Userid = prefs.getInt("Userid");
+    print(token);
+   // print(widget.id.toString());
+    print(Userid.toString());
+    var link="https://royalgujarati.com/chief/public/api/get_wishlist";
+    try {
+      final response = await post(Uri.parse(link),body: {
+
+        "user_id":
+        Userid.toString(),
+
+
+      });
+      print("bjkb" + response.statusCode.toString());
+      if (response.statusCode == 200) {
+        final responseJson = json.decode(response.body);
+
+        wishlistarray = responseJson['data'];
+        //showToast("Dish Added to Wishlist Successfully");
+        print(wishlistarray);
+
+        setState(() {
+          isError = false;
+          isLoading = false;
+          print('setstate');
+        });
+      } else {
+        print("bjkb" + response.statusCode.toString());
+        // showToast("Mismatch Credentials");
+        setState(() {
+          isError = true;
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      print(e);
+      setState(() {
+        isError = true;
+        isLoading = false;
+      });
+    }
+  }
+
+List<Widget>  showFavouriteitem() {
+    List <Widget> wishlist=List();
+    for(int i=0; i<wishlistarray.length;i++){
+      wishlist.add(
+        myFavouritesCard(context,wishlistarray[i]['name'],wishlistarray[i]['id'],wishlistarray[i]['image'],wishlistarray[i]['price'],wishlistarray[i]["time_taken"],),
+      );
+    }
+    return wishlist;
+}
+
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chef/Ui/Customer/MostSellingDishesDetails.dart';
 import 'package:flutter_chef/Utils/SizeConfig.dart';
 
 import 'Constants.dart';
@@ -21,7 +22,17 @@ class _mostsellingdishesState extends State<mostsellingdishes> {
     // TODO: implement build
     return   GestureDetector(
       onTap: () {
-        Navigator.of(context).pushNamed('/MostSellingDishesDetails');
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MostSellingDishesDetails(
+                  name: widget.name,
+                  image: widget.image ,
+                  price: widget.price,
+                  id: widget.id,
+                 // chefname: widget.chefname,
+                  time: "43",
+                )));
       },
       child: Container(
         width: SizeConfig.screenWidth * 0.85,
@@ -53,7 +64,7 @@ class _mostsellingdishesState extends State<mostsellingdishes> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: SizeConfig.screenHeight * 0.23,
+              height: SizeConfig.screenHeight * 0.22,
               child: Stack(fit: StackFit.expand,
                 children: [
                   ClipRRect(
@@ -91,7 +102,7 @@ class _mostsellingdishesState extends State<mostsellingdishes> {
                         top: SizeConfig.blockSizeVertical * 0.2,
                         left: SizeConfig.blockSizeVertical
                     ),
-                    child: Text(widget.chefname,
+                    child: Text("Chef Name",
                       style: TextStyle(
                           fontSize: SizeConfig.blockSizeVertical * 1.50,
                           color: Colors.grey
@@ -123,7 +134,7 @@ class _mostsellingdishesState extends State<mostsellingdishes> {
                     ),
                     child: Row(
                       children: [
-                        Text(Constants().currency + "200",
+                        Text(Constants().currency + widget.price.toString(),
                           style: TextStyle(fontWeight: FontWeight.bold),),
                         SizedBox(
                           width: SizeConfig.blockSizeHorizontal,

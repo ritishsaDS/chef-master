@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chef/Ui/Customer/MostSellingDishesDetails.dart';
 import 'package:flutter_chef/Utils/SizeConfig.dart';
 
 import 'Constants.dart';
 
 Widget myFavouritesCard(
-    BuildContext context){
+    BuildContext context,dishname,dishid,dishimage,price,time){
   SizeConfig().init(context);
   return InkWell(
     onTap: (){
-      Navigator.of(context).pushNamed('/MostSellingDishesDetails');
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>MostSellingDishesDetails(name: dishname,image: dishimage,price: price,id: dishid,chefname: "Chef",time:time ,)));
     },
     child: Container(
       width: SizeConfig.screenWidth * 0.85,
@@ -40,7 +41,7 @@ Widget myFavouritesCard(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            height: SizeConfig.screenHeight * 0.23,
+            height: SizeConfig.screenHeight * 0.22,
             child: Stack(fit: StackFit.expand,
               children: [
                 ClipRRect(
@@ -48,7 +49,7 @@ Widget myFavouritesCard(
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10),
                     ),
-                    child: Image.network('https://www.digitalnegative.co/wp-content/uploads/20161103-EighteenChefs13834.jpg',
+                    child:Image.network(dishimage==null?"jhevdhi":dishimage,
                       fit: BoxFit.fill,
                     )),
                 //todo: design favourite icon
@@ -60,7 +61,7 @@ Widget myFavouritesCard(
                 top: SizeConfig.blockSizeVertical * 0.5,
                 left: SizeConfig.blockSizeVertical
             ),
-            child: Text("Dish Name",
+            child: Text(dishname,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: SizeConfig.blockSizeVertical * 2,
@@ -109,7 +110,7 @@ Widget myFavouritesCard(
                   ),
                   child: Row(
                     children: [
-                      Text(Constants().currency+"200",
+                      Text(Constants().currency+price.toString(),
                         style: TextStyle(fontWeight: FontWeight.bold),),
                       SizedBox(
                         width: SizeConfig.blockSizeHorizontal,

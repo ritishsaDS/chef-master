@@ -1,10 +1,17 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
+import 'package:flutter_chef/Driver/DriverLogin.dart';
+import 'package:flutter_chef/Driver/DriverRegister.dart';
+import 'package:flutter_chef/Ui/SignUpCookScreen.dart';
+import 'package:flutter_chef/Utils/Constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chef/Utils/Api.dart';
 import 'package:flutter_chef/Utils/SizeConfig.dart';
 
+import '../LoginScreen.dart';
+import 'Login.dart';
 import 'SignUp2.dart';
 
 class CustomerSignUp extends StatefulWidget {
@@ -83,6 +90,7 @@ class _CustomerSignUpState extends State<CustomerSignUp> {
     pwdFocusNode = FocusNode();
     cPwdFocusNode = FocusNode();
   }
+  int _radioValue = 0;
 
   @override
   void dispose() {
@@ -130,6 +138,8 @@ class _CustomerSignUpState extends State<CustomerSignUp> {
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Container(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
               decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('assets/bg/signup bg .png'),
@@ -150,6 +160,61 @@ class _CustomerSignUpState extends State<CustomerSignUp> {
                           image: AssetImage('assets/icons/my dishes icon.png'),
                         ),
                       ),
+                    ],
+                  ),
+                  Center(child: Text("SignUp As: "),),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+
+                    children: [
+                      new Radio (
+                        value: 0,
+                        groupValue: _radioValue,
+
+                        onChanged: _handleRadioValueChange ,
+                      ),
+                      new Text(
+                        ' User',
+                        style: new TextStyle(fontSize: 16.0),
+                      ),
+
+
+                      new Radio (
+                        value: 1,
+                        groupValue: _radioValue,
+
+                        onChanged: _handleRadioValueChange,
+
+                      ),
+
+                      new Text(
+                        ' Cook',
+                        style: new TextStyle(
+                          fontSize: 16.0,
+
+                        ),
+                      ),
+                      new Radio (
+                        value: 2,
+                        groupValue: _radioValue,
+
+                        onChanged: _handleRadioValueChange,
+
+                      ),
+
+                      new Text(
+                        ' Delivery Person',
+                        style: new TextStyle(
+                          fontSize: 16.0,
+
+                        ),
+                      ),
+
+
+
+
+
+
                     ],
                   ),
                   Container(
@@ -202,9 +267,18 @@ class _CustomerSignUpState extends State<CustomerSignUp> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                child: Text(
-                                  "Full Name",
-                                  style: TextStyle(color: Colors.black),
+                                child: Row(
+
+                                  children: [
+                                    Text(
+                                      "Full Name ",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    Text(
+                                      "*",
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                  ],
                                 ),
                                 padding: EdgeInsets.only(
                                     bottom: SizeConfig.screenHeight * 0.01),
@@ -266,9 +340,17 @@ class _CustomerSignUpState extends State<CustomerSignUp> {
                                 ),
                               ),
                               Container(
-                                child: Text(
-                                  "Username",
-                                  style: TextStyle(color: Colors.black),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "Username",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    Text(
+                                      "*",
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                  ],
                                 ),
                                 padding: EdgeInsets.only(
                                     bottom: SizeConfig.screenHeight * 0.01),
@@ -344,9 +426,17 @@ class _CustomerSignUpState extends State<CustomerSignUp> {
                                       children: [
                                         Container(
                                           //todo: implement dropdown
-                                          child: Text(
-                                            "Phone",
-                                            style: TextStyle(color: Colors.black),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                "Phone ",
+                                                style: TextStyle(color: Colors.black),
+                                              ),
+                                              Text(
+                                                "*",
+                                                style: TextStyle(color: Colors.red),
+                                              ),
+                                            ],
                                           ),
                                           padding: EdgeInsets.only(
                                               bottom:
@@ -469,9 +559,17 @@ class _CustomerSignUpState extends State<CustomerSignUp> {
                                 ),
                               ),
                               Container(
-                                child: Text(
-                                  "Email",
-                                  style: TextStyle(color: Colors.black),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "Email ",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    Text(
+                                      "*",
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                  ],
                                 ),
                                 padding: EdgeInsets.only(
                                     bottom: SizeConfig.screenHeight * 0.01),
@@ -535,9 +633,17 @@ class _CustomerSignUpState extends State<CustomerSignUp> {
                               ),
                               Container(
                                 child: Container(
-                                  child: Text(
-                                    "Gender",
-                                    style: TextStyle(color: Colors.black),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        "Gender ",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                      Text(
+                                        "*",
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                    ],
                                   ),
                                   margin: EdgeInsets.only(
                                       left: SizeConfig.screenWidth * 0.05,
@@ -611,6 +717,139 @@ class _CustomerSignUpState extends State<CustomerSignUp> {
                                 ),
                               ),
                               Container(
+                                child: Text(
+                                  "Password",
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                                padding: EdgeInsets.only(
+                                    bottom: SizeConfig.screenHeight * 0.01),
+                                margin: EdgeInsets.only(
+                                    left: SizeConfig.screenWidth * 0.05,
+                                    top: SizeConfig.blockSizeVertical * 1.5),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(
+                                  left: SizeConfig.screenWidth * 0.05,
+                                  right: SizeConfig.screenWidth * 0.05,
+                                ),
+                                child: TextFormField(
+                                  focusNode: pwdFocusNode,
+                                  controller: pwdController,
+                                  textInputAction: TextInputAction.next,
+                                  keyboardType: TextInputType.text,
+                                  obscureText: true,
+                                  style: TextStyle(color: Colors.black),
+                                  cursorColor: Colors.black,
+                                  decoration: InputDecoration(
+                                      contentPadding:
+                                      EdgeInsets.only(top: 10.0, left: 4.0),
+                                      isDense: true,
+                                      floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                      enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.grey[800],
+                                              style: BorderStyle.solid,
+                                              width: 1.0)),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.grey[800],
+                                              style: BorderStyle.solid,
+                                              width: 1.0)),
+                                      errorBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.grey[800],
+                                            style: BorderStyle.solid,
+                                            width: 1.0),
+                                      ),
+                                      focusedErrorBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.grey[800],
+                                            style: BorderStyle.solid,
+                                            width: 1.0),
+                                      ),
+                                      errorStyle: TextStyle(color: Colors.red)),
+                                  onFieldSubmitted: (term) {
+                                    pwdFocusNode.unfocus();
+                                    FocusScope.of(context)
+                                        .requestFocus(cPwdFocusNode);
+                                  },
+                                  validator: (value) {
+                                    if (value.isEmpty)
+                                      return "This field is required";
+                                    else
+                                      return null;
+                                  },
+                                ),
+                              ),
+                              Container(
+                                child: Container(
+                                  child: Text(
+                                    "Re-enter Password",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  margin: EdgeInsets.only(
+                                      left: SizeConfig.screenWidth * 0.05,
+                                      top: SizeConfig.blockSizeVertical * 1.5),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(
+                                    left: SizeConfig.screenWidth * 0.05,
+                                    right: SizeConfig.screenWidth * 0.05,
+                                    top: SizeConfig.blockSizeVertical),
+                                width: SizeConfig.screenWidth,
+                                child: TextFormField(
+                                  focusNode: cPwdFocusNode,
+                                  controller: cPwdController,
+                                  textInputAction: TextInputAction.done,
+                                  keyboardType: TextInputType.text,
+                                  obscureText: true,
+                                  style: TextStyle(color: Colors.black),
+                                  cursorColor: Colors.black,
+                                  decoration: InputDecoration(
+                                      contentPadding:
+                                      EdgeInsets.only(top: 10.0, left: 4.0),
+                                      isDense: true,
+                                      floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                      enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.grey[800],
+                                              style: BorderStyle.solid,
+                                              width: 1.0)),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.grey[800],
+                                              style: BorderStyle.solid,
+                                              width: 1.0)),
+                                      errorBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.grey[800],
+                                            style: BorderStyle.solid,
+                                            width: 1.0),
+                                      ),
+                                      focusedErrorBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.grey[800],
+                                            style: BorderStyle.solid,
+                                            width: 1.0),
+                                      ),
+                                      errorStyle: TextStyle(color: Colors.red)),
+                                  onFieldSubmitted: (term) {
+                                    cPwdFocusNode.unfocus();
+                                  },
+                                  validator: (value) {
+                                    if (value.isEmpty)
+                                      return "This field is required";
+                                    else if (value != pwdController.text)
+                                      return "Password Mismatch";
+                                    else
+                                      return null;
+                                  },
+                                ),
+                              ),
+                              Container(
                                 margin: EdgeInsets.only(
                                   left: SizeConfig.screenWidth * 0.05,
                                   right: SizeConfig.screenWidth * 0.05,
@@ -622,7 +861,13 @@ class _CustomerSignUpState extends State<CustomerSignUp> {
                                     borderRadius: BorderRadius.circular(5),
                                   ),
                                   minWidth: SizeConfig.screenWidth,
-                                  child: Text(
+                                  child:  isLoading
+                                      ? CircularProgressIndicator(
+                                    valueColor:
+                                    new AlwaysStoppedAnimation<
+                                        Color>(Colors.white),
+                                  )
+                                      :Text(
                                     "Next",
                                     style: TextStyle(fontWeight: FontWeight.bold),
                                   ),
@@ -632,88 +877,88 @@ class _CustomerSignUpState extends State<CustomerSignUp> {
                                   },
                                 ),
                               ),
-                              Container(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.all(5.0),
-                                      decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.circular(5.0),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.grey,
-                                              offset: Offset.zero,
-                                              blurRadius: 0.1,
-                                              spreadRadius: 0.1,
-                                            )
-                                          ]),
-                                      child: Row(
-                                        children: [
-                                          Image(
-                                            image: AssetImage(
-                                                'assets/icons/google.png'),
-                                          ),
-                                          VerticalDivider(
-                                            color: Colors.black,
-                                            thickness: 1.0,
-                                          ),
-                                          Text(
-                                            "Sign in with \n Google+",
-                                            style: TextStyle(
-                                                fontSize:
-                                                SizeConfig.blockSizeVertical *
-                                                    1.25),
-                                          )
-                                        ],
-                                      ),
-                                      width: SizeConfig.screenWidth * 0.34,
-                                      height: SizeConfig.blockSizeVertical * 5,
-                                      margin: EdgeInsets.only(),
-                                    ),
-                                    SizedBox(
-                                      width: SizeConfig.blockSizeHorizontal * 2,
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.all(5.0),
-                                      decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.circular(5.0),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.grey,
-                                              offset: Offset.zero,
-                                              blurRadius: 0.1,
-                                              spreadRadius: 0.1,
-                                            )
-                                          ]),
-                                      child: Row(
-                                        children: [
-                                          Image(
-                                            image:
-                                            AssetImage('assets/icons/fb.png'),
-                                          ),
-                                          VerticalDivider(
-                                            color: Colors.black,
-                                            thickness: 1.0,
-                                          ),
-                                          Text(
-                                            "Sign in with \n Facebook",
-                                            style: TextStyle(
-                                                fontSize:
-                                                SizeConfig.blockSizeVertical *
-                                                    1.25),
-                                          )
-                                        ],
-                                      ),
-                                      width: SizeConfig.screenWidth * 0.34,
-                                      height: SizeConfig.blockSizeVertical * 5,
-                                      margin: EdgeInsets.only(),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              // Container(
+                              //   child: Row(
+                              //     mainAxisAlignment: MainAxisAlignment.center,
+                              //     children: [
+                              //       Container(
+                              //         padding: EdgeInsets.all(5.0),
+                              //         decoration: BoxDecoration(
+                              //             color: Colors.white,
+                              //             borderRadius: BorderRadius.circular(5.0),
+                              //             boxShadow: [
+                              //               BoxShadow(
+                              //                 color: Colors.grey,
+                              //                 offset: Offset.zero,
+                              //                 blurRadius: 0.1,
+                              //                 spreadRadius: 0.1,
+                              //               )
+                              //             ]),
+                              //         child: Row(
+                              //           children: [
+                              //             Image(
+                              //               image: AssetImage(
+                              //                   'assets/icons/google.png'),
+                              //             ),
+                              //             VerticalDivider(
+                              //               color: Colors.black,
+                              //               thickness: 1.0,
+                              //             ),
+                              //             Text(
+                              //               "Sign in with \n Google+",
+                              //               style: TextStyle(
+                              //                   fontSize:
+                              //                   SizeConfig.blockSizeVertical *
+                              //                       1.25),
+                              //             )
+                              //           ],
+                              //         ),
+                              //         width: SizeConfig.screenWidth * 0.34,
+                              //         height: SizeConfig.blockSizeVertical * 5,
+                              //         margin: EdgeInsets.only(),
+                              //       ),
+                              //       SizedBox(
+                              //         width: SizeConfig.blockSizeHorizontal * 2,
+                              //       ),
+                              //       Container(
+                              //         padding: EdgeInsets.all(5.0),
+                              //         decoration: BoxDecoration(
+                              //             color: Colors.white,
+                              //             borderRadius: BorderRadius.circular(5.0),
+                              //             boxShadow: [
+                              //               BoxShadow(
+                              //                 color: Colors.grey,
+                              //                 offset: Offset.zero,
+                              //                 blurRadius: 0.1,
+                              //                 spreadRadius: 0.1,
+                              //               )
+                              //             ]),
+                              //         child: Row(
+                              //           children: [
+                              //             Image(
+                              //               image:
+                              //               AssetImage('assets/icons/fb.png'),
+                              //             ),
+                              //             VerticalDivider(
+                              //               color: Colors.black,
+                              //               thickness: 1.0,
+                              //             ),
+                              //             Text(
+                              //               "Sign in with \n Facebook",
+                              //               style: TextStyle(
+                              //                   fontSize:
+                              //                   SizeConfig.blockSizeVertical *
+                              //                       1.25),
+                              //             )
+                              //           ],
+                              //         ),
+                              //         width: SizeConfig.screenWidth * 0.34,
+                              //         height: SizeConfig.blockSizeVertical * 5,
+                              //         margin: EdgeInsets.only(),
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
                               Container(
                                 margin: EdgeInsets.only(
                                   top: SizeConfig.blockSizeVertical,
@@ -730,7 +975,7 @@ class _CustomerSignUpState extends State<CustomerSignUp> {
                                     ),
                                     InkWell(
                                       onTap: () {
-                                        signup();
+Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
                                       },
                                       child: Text(
                                         "Sign In",
@@ -762,27 +1007,92 @@ class _CustomerSignUpState extends State<CustomerSignUp> {
 
   dynamic registerwithserver = new List();
   signup() async {
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
-    // prefs.getString("device_id");
-    //print(selectedDob);
-    // print("osnanl" + usernameString);
-    // bool isvalid = EmailValidator.validate(usernameString);
+
     if (signUpFormKey.currentState.validate()) {
       signUpFormKey.currentState.save();
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => CustomerSignUp2(
-                  name: fullNameController.text,
-                  username: userNameController.text,
-                  phone: phoneController.text,
-                  email: emailController.text,
-                  gender: selectedGender.gender)));
+      setState(() {
+        isLoading = true;
+      });
+      print("jkrn;o");
+      final map = {
+      "phone_number":phoneController.text,
+      "gender":selectedGender.gender,
+      "email":emailController.text,
+      "password":pwdController.text,
+      "confirm_password":cPwdController.text,
+      "description":"kjjh",
+      "full_name":fullNameController.text,
+      "country_code":"91",
+      "address":"HVVGVGVGVAGVVGV",
+      "city":"Surat",
+        'name':userNameController.text,
+      "state":"Gujarat",
+      "country":"India"};
+      try {
+        Dio dio=Dio();
+        FormData data = FormData.fromMap(map);
+        final response = await dio.post((registeruser),
+            data: data);
+        print("bjkb" + response.statusCode.toString());
+        if (response.statusCode == 200) {
+         // final responseJson = json.decode(response.data);
+
+         // registerwithserver = responseJson;
+          // print(loginwithserver['data']['email']);
+          print(response.data);
+          showToast("Register Succesfully");
+          Navigator.of(context).pushNamed('/CustomerLogin');
+          // showToast("");
+          //  savedata();
+          setState(() {
+            isError = false;
+            isLoading = false;
+            print('setstate');
+          });
+        } else {
+          //print("bjkb" + response.statusCode.toString());
+          final responseJson = json.decode(response.data);
+          registerwithserver = responseJson;
+          showToast(registerwithserver['error']);
+          setState(() {
+            isError = true;
+            isLoading = false;
+          });
+        }
+      } catch (e) {
+        print(e);
+        setState(() {
+          isError = true;
+          isLoading = false;
+        });
+      }
     }
   }
+  void _handleRadioValueChange(int value) {
+    setState(() {
+      _radioValue = value;
+
+      switch (_radioValue) {
+        case 0:
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
+          break;
+        case 1:
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUpCook()));
+          break;
+        case 2:
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>Driverregister()));
+
+      }
+    });
+  }
+
 }
 
 class Gender {
   const Gender({this.gender});
   final String gender;
+}
+class Drivermode {
+  const Drivermode({this.mode});
+  final String mode;
 }

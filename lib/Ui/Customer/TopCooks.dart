@@ -34,7 +34,7 @@ class _TopCooksState extends State<TopCooks> {
     SizeConfig().init(context);
     return SafeArea(child: Scaffold(
       backgroundColor: Colors.white,
-      bottomNavigationBar: customerNavBar(0, context),
+      bottomNavigationBar: Customerbottom(index:0),
       appBar: AppBar(
         backgroundColor: Color(0XFFFEE715),
         title: Text("Top Cook's",

@@ -29,7 +29,7 @@ class _CustomerPaymentState extends State<CustomerPayment> {
             color: Colors.black
         ),
       ),
-      bottomNavigationBar: customerNavBar(1, context),
+      bottomNavigationBar: Customerbottom(index:1),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(

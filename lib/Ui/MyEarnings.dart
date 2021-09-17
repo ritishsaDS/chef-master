@@ -280,7 +280,7 @@ class _MyEarningsState extends State<MyEarnings> {
         ],
       ),
     ),
-     // bottomNavigationBar: navBar(3, context),
+     // bottomNavigationBar: navBar(3),
     ));
     
   }

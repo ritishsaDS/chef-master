@@ -67,7 +67,180 @@ class _MyDishesState extends State<MyDishes> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(child: Text("Popular Dishes",
+            // Container(child: Text("Popular Dishes",
+            //   style: TextStyle(
+            //     fontSize: SizeConfig.blockSizeVertical * 2,
+            //     fontWeight: FontWeight.bold,
+            //   ),),
+            //   alignment: Alignment.center,
+            //   padding: EdgeInsets.all(SizeConfig.blockSizeVertical),),
+    //         Container(
+    //           width: SizeConfig.screenWidth,
+    //           height: SizeConfig.screenHeight * 0.3,
+    //           child: Container(
+    //             width: SizeConfig.screenWidth,
+    //             padding: EdgeInsets.only(
+    //               left: SizeConfig.blockSizeVertical * 2,
+    //               right: SizeConfig.blockSizeVertical * 2,
+    //             ),
+    //             decoration: BoxDecoration(
+    //                 borderRadius: BorderRadius.circular(5)
+    //             ),
+    //             child: Carousel(
+    //               boxFit: BoxFit.cover,
+    //               autoplay: true,
+    //               borderRadius: true,
+    //               autoplayDuration: Duration(
+    //                   seconds: 3
+    //               ),
+    //               animationCurve: Curves.fastOutSlowIn,
+    //               dotSpacing: SizeConfig.blockSizeHorizontal * 3,
+    //               animationDuration: Duration(milliseconds: 1000),
+    //               dotSize: 6.0,
+    //               dotColor: Colors.grey[700],
+    //               dotIncreasedColor: Color(0XFFFEE715),
+    //               dotBgColor: Colors.transparent,
+    //               dotPosition: DotPosition.bottomCenter,
+    //               //dotVerticalPadding: SizeConfig.blockSizeVertical,
+    //               showIndicator: true,
+    //               indicatorBgPadding: 9.0,
+    //               images: [
+    //                 NetworkImage('https://www.helpguide.org/wp-content/uploads/table-with-grains-vegetables-fruit-768.jpg'),
+    //                 NetworkImage('https://scx2.b-cdn.net/gfx/news/hires/2016/howcuttingdo.jpg'),
+    //                 NetworkImage('https://cdn-a.william-reed.com/var/wrbm_gb_food_pharma/storage/images/publications/food-beverage-nutrition/foodnavigator.com/article/2020/04/22/coronavirus-and-obesity-doctors-take-aim-at-food-industry-over-poor-diets/10933380-3-eng-GB/Coronavirus-and-obesity-Doctors-take-aim-at-food-industry-over-poor-diets_wrbm_large.jpg'),
+    //                 NetworkImage('https://rs.projects-abroad.net/v1/hero/indian-cuisine-south-africa-food-tours-product-5e146c7a97eb2.[1600].jpeg'),
+    //                 NetworkImage('https://www.refrigeratedfrozenfood.com/ext/resources/NEW_RD_Website/DefaultImages/default-pasta.jpg?1430942591'),
+    //                 NetworkImage('https://i.pinimg.com/originals/18/20/fe/1820fe688c159fc88ce4429de5fa05b5.jpg'),
+    //               ],
+    //             ),
+    //           ),
+    //         ),
+    //         Container(
+    //           margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical,left: 10),
+    //           child: Row(
+    //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //             children: [
+    //               Container(
+    //
+    //                 decoration: BoxDecoration(
+    //                     border: Border.all(
+    //                         color: Color(0XFFFEE715),
+    //                         width: 1.5
+    //                     ),
+    //                     borderRadius: BorderRadius.circular(5)
+    //                 ),
+    //                 height: SizeConfig.blockSizeVertical * 4,
+    //                 width: SizeConfig.blockSizeHorizontal * 38,
+    //                 child: Row(
+    //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //                   children: [
+    //                     Container(
+    //                       width: SizeConfig.screenWidth * 0.37,
+    //
+    //                       child: DropdownButtonFormField<Sort>(
+    //
+    //                         decoration: InputDecoration.collapsed(hintText: ''),
+    //                         //   focusNode: genderFocusNode,
+    //                         hint: Text(
+    //                           widget.sort==""?" Sort By":widget.sort,
+    //                           style: TextStyle(
+    //                               fontSize:
+    //                               SizeConfig.blockSizeVertical * 1.5),
+    //                         ),
+    //                         value: selectedGender,
+    //                         onChanged: (Sort value) {
+    //                           setState(() {
+    //                             selectedGender = value;
+    //
+    //                             sort=selectedGender.type;
+    //                             print(sort);
+    //                           });
+    //                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MyDishes(sort:sort)));
+    //
+    //                         },
+    //                         items: genders.map((Sort gender) {
+    //                           return DropdownMenuItem<Sort>(
+    //                             value: gender,
+    //                             child: Text(
+    //                               gender.type,
+    //                               style: TextStyle(
+    //                                   fontSize:
+    //                                   SizeConfig.blockSizeVertical *
+    //                                       1.5),
+    //                             ),
+    //                           );
+    //                         }).toList(),
+    //                       ),
+    //                     ),
+    //
+    //
+    //                   ],
+    //                 ),
+    //               ),
+    //
+    //               Container(
+    //                 decoration: BoxDecoration(
+    //                     border: Border.all(
+    //                         color: Color(0XFFFEE715),
+    //                         width: 1.5
+    //                     ),
+    //                     borderRadius: BorderRadius.circular(5)
+    //                 ),
+    //                 height: SizeConfig.blockSizeVertical * 4,
+    //                 width: SizeConfig.blockSizeHorizontal * 35,
+    //                 margin: EdgeInsets.only(
+    //                     right: SizeConfig.blockSizeVertical * 2
+    //                 ),
+    //                 child: Row(
+    //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //                   children: [
+    //                     Container(
+    //                       width:SizeConfig.screenWidth * 0.2,
+    //                       padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal),
+    //                       child: TextFormField(
+    //                         style: new TextStyle(
+    //
+    //                             fontStyle: FontStyle.normal,
+    //                             fontSize: 12.0),
+    //                         decoration: InputDecoration(
+    //                           border: InputBorder.none,
+    //                           hintText: "Search",
+    //
+    //                           hintStyle: TextStyle(
+    //                             color: Colors.grey,
+    //                             fontSize: SizeConfig.blockSizeVertical * 1,
+    //                           ),
+    //
+    //                         ),
+    //                         onChanged: (value){
+    //                           setState(() {
+    //                             search=value;
+    //                           });
+    //                         },
+    //                         cursorColor: Colors.black,
+    //                       ),
+    //                     ),
+    //                     GestureDetector(
+    //                       onTap:(){
+    //                         Navigator.push(context,MaterialPageRoute(builder: (context)=>chefsearch(sort:search)));
+    //
+    // },
+    //                       child: Container(
+    //                         color: Color(0XFFFEE715),
+    //                         width: SizeConfig.blockSizeHorizontal * 8,
+    //                         height: SizeConfig.blockSizeVertical * 4,
+    //                         padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal),
+    //                         child: Align(child: Icon(Icons.search,color: Colors.black,),
+    //                           alignment: Alignment.center,),
+    //                       ),
+    //                     ),
+    //                   ],
+    //                 ),
+    //               ),
+    //             ],
+    //           ),
+    //         ),
+            Container(child: Text("My Videos",
               style: TextStyle(
                 fontSize: SizeConfig.blockSizeVertical * 2,
                 fontWeight: FontWeight.bold,
@@ -79,165 +252,22 @@ class _MyDishesState extends State<MyDishes> {
               height: SizeConfig.screenHeight * 0.3,
               child: Container(
                 width: SizeConfig.screenWidth,
-                padding: EdgeInsets.only(
+                margin: EdgeInsets.only(
                   left: SizeConfig.blockSizeVertical * 2,
+
                   right: SizeConfig.blockSizeVertical * 2,
                 ),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5)
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(color: Colors.grey)
                 ),
-                child: Carousel(
-                  boxFit: BoxFit.cover,
-                  autoplay: true,
-                  borderRadius: true,
-                  autoplayDuration: Duration(
-                      seconds: 3
-                  ),
-                  animationCurve: Curves.fastOutSlowIn,
-                  dotSpacing: SizeConfig.blockSizeHorizontal * 3,
-                  animationDuration: Duration(milliseconds: 1000),
-                  dotSize: 6.0,
-                  dotColor: Colors.grey[700],
-                  dotIncreasedColor: Color(0XFFFEE715),
-                  dotBgColor: Colors.transparent,
-                  dotPosition: DotPosition.bottomCenter,
-                  //dotVerticalPadding: SizeConfig.blockSizeVertical,
-                  showIndicator: true,
-                  indicatorBgPadding: 9.0,
-                  images: [
-                    NetworkImage('https://www.helpguide.org/wp-content/uploads/table-with-grains-vegetables-fruit-768.jpg'),
-                    NetworkImage('https://scx2.b-cdn.net/gfx/news/hires/2016/howcuttingdo.jpg'),
-                    NetworkImage('https://cdn-a.william-reed.com/var/wrbm_gb_food_pharma/storage/images/publications/food-beverage-nutrition/foodnavigator.com/article/2020/04/22/coronavirus-and-obesity-doctors-take-aim-at-food-industry-over-poor-diets/10933380-3-eng-GB/Coronavirus-and-obesity-Doctors-take-aim-at-food-industry-over-poor-diets_wrbm_large.jpg'),
-                    NetworkImage('https://rs.projects-abroad.net/v1/hero/indian-cuisine-south-africa-food-tours-product-5e146c7a97eb2.[1600].jpeg'),
-                    NetworkImage('https://www.refrigeratedfrozenfood.com/ext/resources/NEW_RD_Website/DefaultImages/default-pasta.jpg?1430942591'),
-                    NetworkImage('https://i.pinimg.com/originals/18/20/fe/1820fe688c159fc88ce4429de5fa05b5.jpg'),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.add_circle_outline,size: 40,),
+                    Text("Add A Video",style: TextStyle(fontSize: 18),)
                   ],
                 ),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical,left: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: Color(0XFFFEE715),
-                            width: 1.5
-                        ),
-                        borderRadius: BorderRadius.circular(5)
-                    ),
-                    height: SizeConfig.blockSizeVertical * 4,
-                    width: SizeConfig.blockSizeHorizontal * 38,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: SizeConfig.screenWidth * 0.37,
-
-                          child: DropdownButtonFormField<Sort>(
-
-                            decoration: InputDecoration.collapsed(hintText: ''),
-                            //   focusNode: genderFocusNode,
-                            hint: Text(
-                              widget.sort==""?" Sort By":widget.sort,
-                              style: TextStyle(
-                                  fontSize:
-                                  SizeConfig.blockSizeVertical * 1.5),
-                            ),
-                            value: selectedGender,
-                            onChanged: (Sort value) {
-                              setState(() {
-                                selectedGender = value;
-
-                                sort=selectedGender.type;
-                                print(sort);
-                              });
-                             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MyDishes(sort:sort)));
-
-                            },
-                            items: genders.map((Sort gender) {
-                              return DropdownMenuItem<Sort>(
-                                value: gender,
-                                child: Text(
-                                  gender.type,
-                                  style: TextStyle(
-                                      fontSize:
-                                      SizeConfig.blockSizeVertical *
-                                          1.5),
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-
-
-                      ],
-                    ),
-                  ),
-
-                  Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: Color(0XFFFEE715),
-                            width: 1.5
-                        ),
-                        borderRadius: BorderRadius.circular(5)
-                    ),
-                    height: SizeConfig.blockSizeVertical * 4,
-                    width: SizeConfig.blockSizeHorizontal * 35,
-                    margin: EdgeInsets.only(
-                        right: SizeConfig.blockSizeVertical * 2
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width:SizeConfig.screenWidth * 0.2,
-                          padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal),
-                          child: TextFormField(
-                            style: new TextStyle(
-
-                                fontStyle: FontStyle.normal,
-                                fontSize: 12.0),
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "Search",
-
-                              hintStyle: TextStyle(
-                                color: Colors.grey,
-                                fontSize: SizeConfig.blockSizeVertical * 1,
-                              ),
-
-                            ),
-                            onChanged: (value){
-                              setState(() {
-                                search=value;
-                              });
-                            },
-                            cursorColor: Colors.black,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap:(){
-                            Navigator.push(context,MaterialPageRoute(builder: (context)=>chefsearch(sort:search)));
-
-    },
-                          child: Container(
-                            color: Color(0XFFFEE715),
-                            width: SizeConfig.blockSizeHorizontal * 8,
-                            height: SizeConfig.blockSizeVertical * 4,
-                            padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal),
-                            child: Align(child: Icon(Icons.search,color: Colors.black,),
-                              alignment: Alignment.center,),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
               ),
             ),
             Container(

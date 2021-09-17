@@ -39,7 +39,7 @@ class _EditIngredientState extends State<EditIngredient> {
           ),
         ],
       ),
-     // bottomNavigationBar: navBar(1, context),
+     // bottomNavigationBar: navBar(1),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(

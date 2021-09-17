@@ -3,6 +3,7 @@ import 'package:flutter_chef/Utils/SizeConfig.dart';
 
 Widget listTileMostSellingDishDetail(BuildContext context,
     String qty,
+    String itemname,
     String Sno){
   SizeConfig().init(context);
   return Container(
@@ -42,7 +43,7 @@ Widget listTileMostSellingDishDetail(BuildContext context,
                   height: SizeConfig.blockSizeVertical * 6,
                   width: SizeConfig.blockSizeHorizontal * 0.4,
                 ),
-                Text("Item Name",style: TextStyle(
+                Text(itemname,style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),),
               ],

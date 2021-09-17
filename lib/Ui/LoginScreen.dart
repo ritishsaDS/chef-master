@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_chef/Driver/DriverLogin.dart';
 import 'package:flutter_chef/Utils/Api.dart';
 import 'package:flutter_chef/Utils/BottomNavigation.dart';
 import 'package:flutter_chef/Utils/Constants.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_chef/Utils/SizeConfig.dart';
 
+import 'Customer/Login.dart';
 import 'Forgetchef.dart';
 
 
@@ -36,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
   var profileData;
   Map userfb = {};
   //var facebookLogin = FacebookLogin();
-
+  int _radioValue = 1;
   GoogleSignIn _googleSignIn = GoogleSignIn();
 
   final signInKey = GlobalKey<FormState>();
@@ -73,6 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   dynamic loginwithserver = new List();
   signin() async {
+    print("kjxkavdk");
     try {
       final response = await http.post(Uri.parse(login), body: {
         "email": usernameController.text,
@@ -89,8 +92,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
         SharedPreferences preferences = await SharedPreferences.getInstance();
 
-        preferences.setString("token", loginwithserver['access_token']);
-
+        preferences.setString("token", loginwithserver['token']['original']['access_token']);
+        preferences.setInt("chefid", loginwithserver['data'][0]['id']);
+       // preferences.setString("token", loginwithserver['token']['original']['access_token']);
+print(preferences.getInt("chefid"));
+print( preferences.getString("token"));
           showToast("Login Successfully");
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MyBottomBarDemo()));
           preferences.setString("login", "cook");
@@ -151,6 +157,62 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ),
+                  Center(child: Text("SignIn As: "),),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+
+                    children: [
+                      new Radio (
+                        value: 0,
+                        groupValue: _radioValue,
+
+                        onChanged: _handleRadioValueChange ,
+                      ),
+                      new Text(
+                        ' User',
+                        style: new TextStyle(fontSize: 16.0),
+                      ),
+
+
+                      new Radio (
+                        value: 1,
+                        groupValue: _radioValue,
+
+                        onChanged: _handleRadioValueChange,
+
+                      ),
+
+                      new Text(
+                        ' Cook',
+                        style: new TextStyle(
+                          fontSize: 16.0,
+
+                        ),
+                      ),
+                      new Radio (
+                        value: 2,
+                        groupValue: _radioValue,
+
+                        onChanged: _handleRadioValueChange,
+
+                      ),
+
+                      new Text(
+                        ' Delivery Person',
+                        style: new TextStyle(
+                          fontSize: 16.0,
+
+                        ),
+                      ),
+
+
+
+
+
+
+                    ],
+                  ),
+
                   Container(
                     margin: EdgeInsets.only(
                       top: SizeConfig.screenHeight * 0.03,
@@ -258,8 +320,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                         .requestFocus(pwdFocusNode);
                                   },
                                   validator: (value) {
-                                    if (value.isEmpty)
+                                    if (value.isEmpty){
+                                      setState(() {
+                                        isLoading=false;
+                                      });
                                       return "This field is required";
+                                    }
                                     else
                                       return null;
                                   },
@@ -322,8 +388,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                     pwdFocusNode.unfocus();
                                   },
                                   validator: (value) {
-                                    if (value.isEmpty)
+                                    if (value.isEmpty){
+                                      setState(() {
+                                        isLoading=false;
+                                      });
                                       return "This field is required";
+                                    }
                                     else
                                       return null;
                                   },
@@ -588,6 +658,23 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     }).catchError((e) {
       print(e);
+    });
+  }
+  void _handleRadioValueChange(int value) {
+    setState(() {
+      _radioValue = value;
+
+      switch (_radioValue) {
+        case 0:
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
+          break;
+        case 1:
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+          break;
+        case 2:
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>DriverLogin()));
+
+      }
     });
   }
 }

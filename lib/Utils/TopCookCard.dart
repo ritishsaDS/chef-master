@@ -21,7 +21,7 @@ class _mostsellingdishesState extends State<topcookcard> {
     // TODO: implement build
     return   GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CookDetails()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CookDetails(name:widget.name,phone:widget.price)));
       },
       child: Container(
         width: SizeConfig.screenWidth * 0.85,

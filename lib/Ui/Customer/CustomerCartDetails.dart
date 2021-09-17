@@ -19,7 +19,7 @@ class _CustomerCartDetailsState extends State<CustomerCartDetails> {
     SizeConfig().init(context);
     return SafeArea(child: Scaffold(
       backgroundColor: Colors.white,
-      bottomNavigationBar: customerNavBar(1, context),
+      bottomNavigationBar: Customerbottom(index:1),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
@@ -112,10 +112,10 @@ class _CustomerCartDetailsState extends State<CustomerCartDetails> {
               physics: NeverScrollableScrollPhysics(),
               padding: EdgeInsets.all(SizeConfig.blockSizeVertical),
               children: [
-                listTileMostSellingDishDetail(context," 2 Kg.","1"),
-                listTileMostSellingDishDetail(context," 200 Gm.","2"),
-                listTileMostSellingDishDetail(context," 1 Kg.","3"),
-                listTileMostSellingDishDetail(context," 2 Kg.","4")
+                listTileMostSellingDishDetail(context,""," 2 Kg.","1"),
+                listTileMostSellingDishDetail(context,""," 200 Gm.","2"),
+                listTileMostSellingDishDetail(context,""," 1 Kg.","3"),
+                listTileMostSellingDishDetail(context,""," 2 Kg.","4")
               ],
             ),
             Container(

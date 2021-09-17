@@ -1,27 +1,16 @@
-import 'dart:convert';
-import 'package:flutter_chef/Driver/DriverLogin.dart';
-import 'package:flutter_chef/Driver/DriverRegister.dart';
-import 'package:flutter_chef/Ui/Customer/forgetcust.dart';
-import 'package:flutter_chef/Ui/HomePage.dart';
-import 'package:flutter_chef/Ui/SignUpCookScreen.dart';
-import 'package:flutter_chef/Utils/Constants.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:flutter_chef/Utils/Api.dart';
+import 'package:flutter_chef/Ui/Customer/Login.dart';
+import 'package:flutter_chef/Ui/LoginScreen.dart';
 import 'package:flutter_chef/Utils/SizeConfig.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../LoginScreen.dart';
-import 'HomePage.dart';
+import 'DriverRegister.dart';
 
-class Login extends StatefulWidget {
-  const Login({Key key}) : super(key: key);
-
+class DriverLogin extends StatefulWidget{
   @override
-  _LoginState createState() => _LoginState();
+  _DriverLoginState createState() => _DriverLoginState();
 }
 
-class _LoginState extends State<Login> {
+class _DriverLoginState extends State<DriverLogin> {
   GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
   TextEditingController usernameController = TextEditingController();
   TextEditingController pwdController = TextEditingController();
@@ -29,7 +18,7 @@ class _LoginState extends State<Login> {
   FocusNode userFocusNode;
   bool _rememberMe = false;
   bool isLoading = false;
-  int _radioValue = 0;
+  int _radioValue = 2;
   bool isError = false;
   @override
   void initState() {
@@ -48,63 +37,63 @@ class _LoginState extends State<Login> {
   validate() {
     if (loginFormKey.currentState.validate()) {
       loginFormKey.currentState.save();
-      signin();
+     // signin();
     } else {}
   }
 
   dynamic loginwithserver = new List();
-  signin() async {
-    try {
-      final response = await http.post(Uri.parse(loginuser), body: {
-        "email": usernameController.text,
-        "password": pwdController.text,
-      });
-
-      print("bjkb" + response.statusCode.toString());
-      if (response.statusCode == 200) {
-        final responseJson = json.decode(response.body);
-
-        loginwithserver = responseJson;
-        // print(loginwithserver['data']['email']);
-        print(loginwithserver);
-
-        SharedPreferences preferences = await SharedPreferences.getInstance();
-        preferences.setString("usertoken", loginwithserver["token"]["original"]['access_token']);
-        preferences.setInt("Userid", loginwithserver["data"][0]['id']);
-
-        preferences.setString("login", "/CustomerLogin");
-        showToast("Login Succesfully");
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => CustomerHomePage())); // showToast("");
-        //savedata();
-        setState(() {
-          isError = false;
-          isLoading = false;
-          print('setstate');
-        });
-      } else {
-        print("bjkb" + response.statusCode.toString());
-        showToast("Mismatch Credentials");
-        setState(() {
-          isError = true;
-          isLoading = false;
-        });
-      }
-    } catch (e) {
-      print(e);
-      setState(() {
-        isError = true;
-        isLoading = false;
-      });
-    }
-  }
+  // signin() async {
+  //   try {
+  //     final response = await http.post(Uri.parse(loginuser), body: {
+  //       "email": usernameController.text,
+  //       "password": pwdController.text,
+  //     });
+  //
+  //     print("bjkb" + response.statusCode.toString());
+  //     if (response.statusCode == 200) {
+  //       final responseJson = json.decode(response.body);
+  //
+  //       loginwithserver = responseJson;
+  //       // print(loginwithserver['data']['email']);
+  //       print(loginwithserver);
+  //
+  //       SharedPreferences preferences = await SharedPreferences.getInstance();
+  //       preferences.setString("usertoken", loginwithserver["token"]["original"]['access_token']);
+  //       preferences.setInt("Userid", loginwithserver["data"][0]['id']);
+  //
+  //       preferences.setString("login", "/CustomerLogin");
+  //       showToast("Login Succesfully");
+  //       Navigator.pushReplacement(
+  //           context,
+  //           MaterialPageRoute(
+  //               builder: (context) => CustomerHomePage())); // showToast("");
+  //       //savedata();
+  //       setState(() {
+  //         isError = false;
+  //         isLoading = false;
+  //         print('setstate');
+  //       });
+  //     } else {
+  //       print("bjkb" + response.statusCode.toString());
+  //       showToast("Mismatch Credentials");
+  //       setState(() {
+  //         isError = true;
+  //         isLoading = false;
+  //       });
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //     setState(() {
+  //       isError = true;
+  //       isLoading = false;
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-  //  BestTutorSite _site = BestTutorSite.javatpoint;
+    //  BestTutorSite _site = BestTutorSite.javatpoint;
     String radioButtonItem = 'ONE';
 
     // Group Value for Radio Button.
@@ -137,61 +126,61 @@ class _LoginState extends State<Login> {
                       ),
                     ],
                   ),
-Center(child: Text("SignIn As: "),),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                  Center(child: Text("SignIn As: "),),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
 
-              children: [
-              new Radio (
-                value: 0,
-                groupValue: _radioValue,
+                    children: [
+                      new Radio (
+                        value: 0,
+                        groupValue: _radioValue,
 
-                onChanged: _handleRadioValueChange ,
-              ),
-              new Text(
-                ' User',
-                style: new TextStyle(fontSize: 16.0),
-              ),
+                        onChanged: _handleRadioValueChange ,
+                      ),
+                      new Text(
+                        ' User',
+                        style: new TextStyle(fontSize: 16.0),
+                      ),
 
 
-              new Radio (
-                value: 1,
-                groupValue: _radioValue,
+                      new Radio (
+                        value: 1,
+                        groupValue: _radioValue,
 
-                onChanged: _handleRadioValueChange,
+                        onChanged: _handleRadioValueChange,
 
-              ),
+                      ),
 
-              new Text(
-                ' Cook',
-                style: new TextStyle(
-                  fontSize: 16.0,
+                      new Text(
+                        ' Cook',
+                        style: new TextStyle(
+                          fontSize: 16.0,
 
-              ),
-            ),
-                new Radio (
-                  value: 2,
-                  groupValue: _radioValue,
+                        ),
+                      ),
+                      new Radio (
+                        value: 2,
+                        groupValue: _radioValue,
 
-                  onChanged: _handleRadioValueChange,
+                        onChanged: _handleRadioValueChange,
 
-                ),
+                      ),
 
-                new Text(
-                  ' Delivery Person',
-                  style: new TextStyle(
-                    fontSize: 16.0,
+                      new Text(
+                        ' Delivery Person',
+                        style: new TextStyle(
+                          fontSize: 16.0,
 
+                        ),
+                      ),
+
+
+
+
+
+
+                    ],
                   ),
-                ),
-
-
-
-
-
-
-          ],
-        ),
                   Container(
                     margin: EdgeInsets.only(
                       top: SizeConfig.screenHeight * 0.03,
@@ -225,7 +214,7 @@ Center(child: Text("SignIn As: "),),
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                'Sign in',
+                                'Sign in as Driver',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -299,13 +288,8 @@ Center(child: Text("SignIn As: "),),
                                         .requestFocus(pwdFocusNode);
                                   },
                                   validator: (value) {
-                                    if (value.isEmpty){
-                                      setState(() {
-                                        isLoading=false;
-                                      });
+                                    if (value.isEmpty)
                                       return "This field is required";
-                                    }
-
                                     else
                                       return null;
                                   },
@@ -368,13 +352,8 @@ Center(child: Text("SignIn As: "),),
                                     pwdFocusNode.unfocus();
                                   },
                                   validator: (value) {
-                                    if (value.isEmpty){
-                                      setState(() {
-                                        isLoading=false;
-                                      });
+                                    if (value.isEmpty)
                                       return "This field is required";
-                                    }
-
                                     else
                                       return null;
                                   },
@@ -411,8 +390,8 @@ Center(child: Text("SignIn As: "),),
                                         ),
                                       ],
                                     ),
-                                    GestureDetector(onTap:(){
-                                      Navigator.push(context,MaterialPageRoute(builder: (context)=>ForgetPasswordCust()));
+                                     GestureDetector(onTap:(){
+                                    //   Navigator.push(context,MaterialPageRoute(builder: (context)=>ForgetPasswordCust()));
                                     },child: Text("Forget?")),
                                   ],
                                 ),
@@ -495,8 +474,7 @@ Center(child: Text("SignIn As: "),),
                                     Text("Don't have an account? "),
                                     InkWell(
                                       onTap: () {
-                                        Navigator.of(context)
-                                            .pushNamed('/CustomerSignUp');
+                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Driverregister()));
                                       },
                                       child: Text(
                                         "Sign Up",
@@ -532,7 +510,7 @@ Center(child: Text("SignIn As: "),),
           Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
           break;
         case 2:
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>DriverLogin()));
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>Driverregister()));
 
       }
     });

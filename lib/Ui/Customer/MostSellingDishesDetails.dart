@@ -1,16 +1,22 @@
+import 'dart:convert';
+import 'package:http/http.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chef/Utils/Constants.dart';
 import 'package:flutter_chef/Utils/CustomerNavBar.dart';
 import 'package:flutter_chef/Utils/SizeConfig.dart';
 import 'package:flutter_chef/Utils/listTileMostSellingDishesDetails.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MostSellingDishesDetails extends StatefulWidget {
   dynamic name;
-  dynamic image;
-  dynamic chefname;
+  String image;
+  dynamic id;
+  dynamic chef_id;
+  dynamic ingredients;
   dynamic time;
   dynamic price;
-   MostSellingDishesDetails({this.chefname,this.image,this.name,this.price,this.time}) ;
+  dynamic chefname;
+   MostSellingDishesDetails({this.ingredients,this.chef_id,this.image,this.name,this.id,this.price,this.time, String chefname}) ;
 
 
   @override
@@ -18,15 +24,25 @@ class MostSellingDishesDetails extends StatefulWidget {
 }
 
 class _MostSellingDishesDetailsState extends State<MostSellingDishesDetails> {
+  @override
+  void initState() {
+    print(widget.chef_id);
+    widget.chefname="CHefname";
+    // TODO: implement initState
+    super.initState();
+  }
   bool addWidget = false;
   bool addWidget1 = true;
+  bool isLoading = false;
+  bool isError = false;
+
   TextEditingController instructionsController = TextEditingController();
   @override
 
   Widget build(BuildContext context) {
     return SafeArea(child: Scaffold(
       backgroundColor: Colors.white,
-      bottomNavigationBar: customerNavBar(0, context),
+      bottomNavigationBar: Customerbottom(index:0),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
@@ -66,7 +82,7 @@ class _MostSellingDishesDetailsState extends State<MostSellingDishesDetails> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Cook \n${widget.chefname}",
+                  Text("Cook }",
                   style: TextStyle(
                     color: Colors.grey,
                     fontSize: SizeConfig.blockSizeVertical * 1.50
@@ -111,17 +127,17 @@ class _MostSellingDishesDetailsState extends State<MostSellingDishesDetails> {
                 color: Colors.grey
               ),),
             ),
-            ListView(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.all(SizeConfig.blockSizeVertical),
-              children: [
-                listTileMostSellingDishDetail(context," 2 Kg.","1"),
-                listTileMostSellingDishDetail(context," 200 Gm.","2"),
-                listTileMostSellingDishDetail(context," 1 Kg.","3"),
-                listTileMostSellingDishDetail(context," 2 Kg.","4")
-              ],
-            ),
+            // ListView(
+            //   shrinkWrap: true,
+            //   physics: NeverScrollableScrollPhysics(),
+            //   padding: EdgeInsets.all(SizeConfig.blockSizeVertical),
+            //   children: getingred()
+            //     // listTileMostSellingDishDetail(context," 2 Kg.","1"),
+            //     // listTileMostSellingDishDetail(context," 200 Gm.","2"),
+            //     // listTileMostSellingDishDetail(context," 1 Kg.","3"),
+            //     // listTileMostSellingDishDetail(context," 2 Kg.","4")
+            //
+            // ),
             Container(
               margin: EdgeInsets.only(
                   left: SizeConfig.screenWidth * 0.1,
@@ -472,14 +488,24 @@ class _MostSellingDishesDetailsState extends State<MostSellingDishesDetails> {
                   top: SizeConfig.blockSizeVertical * 2
               ),
               child: MaterialButton(onPressed: (){
-                Navigator.of(context).pushNamed('/Cart');
+               setState(() {
+                 isLoading=true;
+                 addtocart();
+               });
+               // Navigator.of(context).pushNamed('/Cart');
               },
                 color: Color(0XFFFEE715),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
                 minWidth: SizeConfig.screenWidth,
-                child: Text("Add To Cart",
+                child: isLoading
+                    ? CircularProgressIndicator(
+                  valueColor:
+                  new AlwaysStoppedAnimation<
+                      Color>(Colors.white),
+                )
+                    : Text("Add To Cart",
                 style: TextStyle(
                   fontWeight: FontWeight.bold
                 ),),),
@@ -490,5 +516,60 @@ class _MostSellingDishesDetailsState extends State<MostSellingDishesDetails> {
       ),
 
     ));
+  }
+  dynamic addwishlistarray = new List();
+  void addtocart() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString("usertoken");
+    var Userid = prefs.getInt("Userid");
+    print(token);
+    //print(widget.id.toString());
+    print(Userid.toString());
+    var link="https://royalgujarati.com/chief/public/api/add_cart";
+    try {
+      final response = await post(Uri.parse(link),
+          body: {
+        "dish_id":widget.id.toString(),
+        "user_id":Userid.toString(),
+        "price":widget.price.toString(),
+        "total_product":"1",
+
+
+      });
+      print("kb" + response.statusCode.toString());
+      if (response.statusCode == 200) {
+        final responseJson = json.decode(response.body);
+        showToast("Dish Added to Cart Successfully");
+        addwishlistarray = responseJson['data'];
+
+        print(addwishlistarray);
+
+        setState(() {
+          isError = false;
+          isLoading = false;
+          print('setstate');
+        });
+      } else {
+        print("bjkb" + response.statusCode.toString());
+        // showToast("Mismatch Credentials");
+        setState(() {
+          isError = true;
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      print(e);
+      setState(() {
+        isError = true;
+        isLoading = false;
+      });
+    }
+  }
+  List<Widget> getingred(){
+    List <Widget>ingredientslist=List();
+    for(int i =0; i<widget.ingredients.length;i++){
+      ingredientslist.add(listTileMostSellingDishDetail(context,widget.ingredients[i]['quantity'],widget.ingredients[i]['ingredient_name'],"1"),);
+    }
+    return ingredientslist;
   }
 }

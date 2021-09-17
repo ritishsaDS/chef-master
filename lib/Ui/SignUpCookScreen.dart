@@ -3,7 +3,10 @@ import 'dart:convert';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_chef/Driver/DriverLogin.dart';
+import 'package:flutter_chef/Driver/DriverRegister.dart';
 import 'package:flutter_chef/Ui/Customer/Login.dart';
+import 'package:flutter_chef/Ui/Customer/SignUp.dart';
 import 'package:flutter_chef/Ui/Signup2cook.dart';
 import 'package:flutter_chef/Utils/Constants.dart';
 import 'package:http/http.dart' as http;
@@ -136,6 +139,25 @@ class _SignUpCookState extends State<SignUpCook> {
 
     getCurrentAddress();
   }
+  void _handleRadioValueChange(int value) {
+    setState(() {
+      _radioValue = value;
+
+      switch (_radioValue) {
+        case 0:
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>CustomerSignUp()));
+          break;
+        case 1:
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUpCook()));
+          break;
+        case 2:
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>Driverregister()));
+
+      }
+    });
+  }
+  int _radioValue = 1;
+
 
   getCurrentAddress() async {
     final coordinates = new Coordinates(latlong.latitude, latlong.longitude);
@@ -227,6 +249,61 @@ class _SignUpCookState extends State<SignUpCook> {
                           image: AssetImage('assets/icons/my dishes icon.png'),
                         ),
                       ),
+                    ],
+                  ),
+                  Center(child: Text("SignUp As: "),),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+
+                    children: [
+                      new Radio (
+                        value: 0,
+                        groupValue: _radioValue,
+
+                        onChanged: _handleRadioValueChange ,
+                      ),
+                      new Text(
+                        ' User',
+                        style: new TextStyle(fontSize: 16.0),
+                      ),
+
+
+                      new Radio (
+                        value: 1,
+                        groupValue: _radioValue,
+
+                        onChanged: _handleRadioValueChange,
+
+                      ),
+
+                      new Text(
+                        ' Cook',
+                        style: new TextStyle(
+                          fontSize: 16.0,
+
+                        ),
+                      ),
+                      new Radio (
+                        value: 2,
+                        groupValue: _radioValue,
+
+                        onChanged: _handleRadioValueChange,
+
+                      ),
+
+                      new Text(
+                        ' Delivery Person',
+                        style: new TextStyle(
+                          fontSize: 16.0,
+
+                        ),
+                      ),
+
+
+
+
+
+
                     ],
                   ),
                   Container(
@@ -926,13 +1003,13 @@ class _SignUpCookState extends State<SignUpCook> {
                                   onPressed: () {
     if (signUpFormKey.currentState.validate()) {
       signUpFormKey.currentState.save();
-
+setState(() {
+  isLoading=false;
+});
 
         Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUp2Cook(name:fullNameController.text,business:businessNameController.text,phone:phoneController.text,alternative:alternativePhoneController.text,email:emailController.text,gender:selectedGender.gender,dob:selectedDob.toString())));
 
-      setState(() {
-        isLoading = true;
-      });
+
     }
     // Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUp2Cook()));
                                     // signup(
